@@ -1,0 +1,70 @@
+name: CI
+
+# Two jobs, and the second one is the point.
+#
+# `engine` checks the package on its own terms. `template` scaffolds a project,
+# installs the engine from a packed tarball exactly as a consumer would, and
+# builds it. The second catches what the first structurally cannot: a file left
+# out of `files`, an import that only resolves through the source tree, an
+# undeclared peer dependency.
+#
+# Both of those have already happened here. The engine typechecked cleanly and
+# passed all 35 of its tests while using a `@/` path alias that was
+# unresolvable the moment a host installed it — every consumer would have
+# failed to build. Only the tarball install found it.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  engine:
+    name: Engine — typecheck and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --no-audit --no-fund
+      - run: npx tsc --noEmit
+      - run: npx vitest run
+
+  template:
+    name: Template — scaffold, install the packed engine, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Runs the whole thing: scaffold, npm pack the engine, install the
+      # tarball, typecheck, test, validate, next build.
+      - run: python skill/scripts/selftest.py
+
+  manifest:
+    name: Manifest is current
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # The manifest is generated from the template on disk. If it is stale,
+      # the reference prose is describing code that may not exist — which is
+      # the failure it was built to prevent.
+      - run: python skill/scripts/manifest.py
+      - name: Fail if the manifest was out of date
+        run: |
+          if ! git diff --quiet; then
+            echo "references/00-template-manifest.md is stale."
+            echo "Run: python skill/scripts/manifest.py — and commit the result."
+            git diff
+            exit 1
+          fi

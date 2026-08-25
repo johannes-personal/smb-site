@@ -1,0 +1,14 @@
+{
+  "_comment": "Generated in Phase 4. This is data, not code — every block here must exist in lib/puck.config.tsx, so that anything generated can also be edited by the owner.",
+  "home": {
+    "title": "Home",
+    "data": {
+      "root": {},
+      "content": [
+        { "type": "Hero", "props": { "id": "hero-1", "heading": "Vervang deze kop", "usePhone": true, "layout": "beside" } },
+        { "type": "HoursSummary", "props": { "id": "hours-1", "style": "bar", "linkHref": "/openingstijden" } },
+        { "type": "MapContact", "props": { "id": "contact-1", "heading": "Waar zijn we?" } }
+      ]
+    }
+  }
+}

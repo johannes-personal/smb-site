@@ -1,0 +1,35 @@
+{
+  "name": "smb-site",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "seed": "tsx scripts/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:py": "python3 -m unittest discover -s tests -p 'test_*.py'",
+    "validate": "python3 scripts/validate.py .",
+    "check": "npm run typecheck && npm run test && npm run test:py && npm run validate"
+  },
+  "dependencies": {
+    "@puckeditor/core": "^0.23.0",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.48.0",
+    "@vercel/analytics": "^1.4.1",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@smb-site/engine": "github:johannes-personal/smb-site#v0.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.0"
+  }
+}

@@ -1,0 +1,59 @@
+name: CI
+
+# Every push, every branch, plus pull requests. A small business site gets
+# touched rarely and by whoever is available, so the checks have to run without
+# anyone remembering to ask for them.
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    name: Types, tests and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Unit tests
+        run: npx vitest run
+
+      # No Supabase credentials here on purpose. Every route is force-dynamic,
+      # so nothing renders at build time and the build needs no database. If
+      # this step ever starts demanding secrets, something has begun
+      # prerendering content — which would also bake stale content into the
+      # deployment.
+      - name: Build
+        run: npx next build
+
+  content:
+    name: Content and compliance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Migration tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+
+      # Facts present and well formed, no fact duplicated into page data, every
+      # block in the registry, alt text present. Warnings do not fail the build;
+      # errors do.
+      - name: Validate content
+        run: python scripts/validate.py .

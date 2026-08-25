@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="">
+  <!-- PLACEHOLDER — replace with something of the business's own in Phase 3.
+       Draw it as a silhouette rather than an outline: a favicon is 16px on
+       most screens, where hairlines vanish and only mass reads. Render it at
+       16, 32 and 96px and look at it before shipping — a shape that works at
+       96 is often a blob at 16. Brand dark carrying white, so a browser tab
+       matches the site header. -->
+  <rect width="32" height="32" rx="7" fill="#1d4257"/>
+  <circle cx="16" cy="16" r="7" fill="#ffffff"/>
+</svg>

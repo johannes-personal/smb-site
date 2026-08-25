@@ -1,0 +1,33 @@
+{
+  "name": "@smb-site/engine",
+  "version": "0.1.0",
+  "description": "The rendering and domain engine behind smb-site: blocks, opening-hours rules, facts and taxonomy models.",
+  "license": "UNLICENSED",
+  "private": false,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./blocks": "./src/components/blocks/index.ts",
+    "./styles.css": "./src/styles.css"
+  },
+  "files": ["src", "README.md"],
+  "sideEffects": ["*.css"],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@puckeditor/core": "^0.23.0",
+    "react": "^19.0.0",
+    "next": "^15.0.0"
+  },
+  "devDependencies": {
+    "@puckeditor/core": "^0.23.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "next": "^15.5.0",
+    "react": "^19.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^4.0.0"
+  }
+}

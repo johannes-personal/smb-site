@@ -1,0 +1,81 @@
+{
+  "_comment": "Generated in Phase 2. Every value here is confirmed or comes from open-questions.md — never invented. Replace this example wholesale.",
+  "meta": {
+    "siteName": "Voorbeeldbedrijf",
+    "tagline": "Korte omschrijving",
+    "language": "nl"
+  },
+  "nap": {
+    "legalName": "Voorbeeldbedrijf B.V.",
+    "tradingName": "Voorbeeldbedrijf",
+    "address": {
+      "street": "Voorbeeldstraat 1",
+      "postalCode": "1234 AB",
+      "city": "Voorbeeldstad",
+      "country": "NL"
+    },
+    "phone": "+31612345678",
+    "phoneDisplay": "06-12345678",
+    "email": "info@voorbeeld.nl",
+    "kvk": "",
+    "btw": ""
+  },
+  "hours": {
+    "mode": "regular",
+    "timezone": "Europe/Amsterdam",
+    "seasons": [
+      {
+        "id": "regulier",
+        "label": "Reguliere openingstijden",
+        "_comment": "Geen from/to = het hele jaar. Voeg alleen een gedateerd seizoen toe als de tijden echt per seizoen verschillen — een venster dat afloopt zet de site op 1 januari op 'gesloten'.",
+        "rules": [
+          {
+            "when": "default",
+            "days": [
+              "ma",
+              "di",
+              "wo",
+              "do",
+              "vr"
+            ],
+            "open": "09:00",
+            "close": "17:00"
+          },
+          {
+            "when": "default",
+            "days": [
+              "za"
+            ],
+            "open": "09:00",
+            "close": "16:00"
+          }
+        ]
+      }
+    ],
+    "closed": [
+      {
+        "days": [
+          "zo"
+        ],
+        "reason": "Op zondag zijn wij gesloten"
+      }
+    ],
+    "exceptions": [],
+    "schoolHolidays": [],
+    "notes": "Feestdagen invoeren als losse uitzonderingen — die staan nooit op de oude site."
+  },
+  "prices": {
+    "currency": "EUR",
+    "vatIncluded": true,
+    "tiers": []
+  },
+  "services": {
+    "items": []
+  },
+  "socials": [],
+  "_provenance": {
+    "_comment": "Waar elke fact vandaan komt: welke pagina, 'overgetypt van een foto', of 'bevestigd door eigenaar'. Fase 2 vereist dit; zonder deze regels kan bij de overdracht niemand een bevestigd feit onderscheiden van een aanname.",
+    "nap": "VERVANGEN — bronvermelding per fact invullen",
+    "hours": "VERVANGEN — bronvermelding invullen"
+  }
+}

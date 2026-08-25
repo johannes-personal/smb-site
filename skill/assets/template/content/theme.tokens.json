@@ -1,0 +1,16 @@
+{
+  "_comment": "Generated in Phase 3. Take the brand colour from something the business already owns — signage, a van, a logo — rather than inventing one.",
+  "palette": {
+    "brand": "#1b683d",
+    "brandInk": "#ffffff",
+    "accent": "#e8a33d",
+    "ink": "#1a1a1a",
+    "muted": "#5c5c5c",
+    "surface": "#ffffff",
+    "surfaceAlt": "#f6f4ef"
+  },
+  "type": { "pairing": "warm-serif", "scale": "comfortable" },
+  "shape": { "radius": "soft", "borders": "hairline" },
+  "imagery": { "treatment": "full-bleed", "ratio": "4:3" },
+  "density": "airy"
+}

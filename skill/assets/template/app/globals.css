@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+/* Theme tokens. Generated from content/theme.tokens.json in Phase 3 —
+   visual range comes from these, not from bespoke CSS per client. */
+@theme {
+  --color-brand: #1b683d;
+  --color-brand-ink: #ffffff;
+  --color-accent: #e8a33d;
+  --color-ink: #1a1a1a;
+  --color-muted: #5c5c5c;
+  /* A dark and a tint alongside the brand colour. One brand colour used in two
+     places produces a white site with a coloured button; these carry the
+     header strip, the hours band, mastheads and alternating sections. */
+  --color-brand-dark: #114a2a;
+  --color-brand-tint: #eef4f0;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f6f4ef;
+
+  /* Page width, set from theme.tokens.json `container`. Catalogue and grid
+     sites want 1280-1440px; anything narrower makes a product grid look like
+     a placeholder. reading 48rem / standard 64rem / wide 80rem / full 88rem */
+  --width-page: 80rem;
+
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-soft: 0.75rem;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--color-surface); color: var(--color-ink); font-family: var(--font-body); }
+h1, h2, h3 { font-family: var(--font-display); }
+
+/* Visible focus is part of the accessibility baseline, not a nice-to-have. */
+:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+
+/* One page-width rule rather than max-w-* scattered through every block, so
+   the whole site widens or narrows from a single token. */
+.page { margin-inline: auto; max-width: var(--width-page); padding-inline: 1.5rem; }
+/* Prose does not follow the page width. A line of text 1400px across is
+   unreadable however wide the container token is set. */
+.page-prose { margin-inline: auto; max-width: 58rem; padding-inline: 1.5rem; }
+.page-narrow { margin-inline: auto; max-width: 46rem; padding-inline: 1.5rem; }
+
+/* Catalogue photography is almost always shot on white. Anything but a white
+   plate behind it shows as a grey or brown band around the product. The
+   multiply blend also absorbs the JPEGs whose own background is not quite
+   white. */
+.product-plate { background: #fff; }
+.product-plate img { mix-blend-mode: multiply; }
+
+/* Zoom on hover — the convention on clothing, footwear and homeware sites, and
+   cheaper than a lightbox: no dialog, no focus trap, nothing to close.
+   Pointer-only and motion-safe, so it never fires on a touch device or fights
+   a reduced-motion preference. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .zoomable img { transition: transform 350ms ease; }
+  .zoomable:hover img { transform: scale(1.35); }
+}
