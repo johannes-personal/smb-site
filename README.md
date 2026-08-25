@@ -69,8 +69,7 @@ fix those instead.**
 ## Using the engine
 
 ```bash
-npm install github:johannes-personal/smb-site#v0.1.0     # once the tag exists
-npm install github:johannes-personal/smb-site#da443ab9a34d51315adfbf77ace71abb22a9e5a3
+npm install github:johannes-personal/smb-site#v0.1.0
 ```
 
 Pin something immutable — a tag or a full commit SHA, never `#main`. A project
