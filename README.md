@@ -163,5 +163,11 @@ version. It tags whatever `main` points at, after checking two things:
 
 ## Status
 
+`main` is **0.2.0-unreleased**; the latest tag is `v0.1.0`. That gap is
+deliberate — the version in `package.json` moves as soon as the last release
+ships, so a change landing on `main` has a version to belong to, and nobody has
+to remember to bump before cutting a release. Run the Release workflow when
+there is something in 0.2.0 worth pinning.
+
 One site built with it, at 884 products. The lessons from that build are logged in
 [`skill/CHANGELOG.md`](skill/CHANGELOG.md), including the expensive ones.
