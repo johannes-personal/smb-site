@@ -152,11 +152,17 @@ Semver, and the major is not decorative:
 Adding a required field to `Facts` is a major, even though TypeScript makes it
 look small: every existing site's content becomes invalid.
 
-## Status
+## Cutting a release
 
-`v0.1.0`, tagged in the working tree but **not yet pushed** — this session's git
-credentials cannot push tags. Create it with `git push origin v0.1.0`, or from
-the Releases page, and the pin above resolves. Until then, pin the commit.
+No local git needed. **Actions → Release → Run workflow**, and type the
+version. It tags whatever `main` points at, after checking two things:
+
+- the tag matches `version` in `package.json` — a tag that disagrees with the
+  manifest makes every consumer's lockfile lie about what it installed;
+- the tag does not already exist — a tag consumers pin must never move, or a
+  project that installed it once silently gets different code later.
+
+## Status
 
 One site built with it, at 884 products. The lessons from that build are logged in
 [`skill/CHANGELOG.md`](skill/CHANGELOG.md), including the expensive ones.

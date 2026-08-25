@@ -1,0 +1,68 @@
+name: Release
+
+# Tag a version without needing a local git environment.
+#
+# Tags are how consumers pin the engine — `npm install
+# github:johannes-personal/smb-site#v0.1.0` — so being unable to create one
+# means every project has to pin a commit SHA instead. That works, but it makes
+# the dependency line unreadable and hides which version a site is actually on.
+#
+# Run it from the Actions tab: pick "Release", press "Run workflow", type the
+# version. The tag is created at whatever `main` points to.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to tag, e.g. v0.1.0'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check the version matches package.json
+        run: |
+          WANT="${{ inputs.version }}"
+          HAVE="v$(node -p "require('./package.json').version")"
+          if [ "$WANT" != "$HAVE" ]; then
+            echo "::error::Asked to tag $WANT but package.json says $HAVE."
+            echo "Bump the version in package.json first, or tag $HAVE instead."
+            echo "A tag that disagrees with the manifest is worse than no tag:"
+            echo "it makes every consumer's lockfile lie about what it installed."
+            exit 1
+          fi
+          echo "package.json and the requested tag agree on $WANT"
+
+      - name: Refuse to move an existing tag
+        run: |
+          if git rev-parse "${{ inputs.version }}" >/dev/null 2>&1; then
+            echo "::error::${{ inputs.version }} already exists."
+            echo "Tags that consumers pin must never move — a project that"
+            echo "installed it once would silently get different code."
+            exit 1
+          fi
+
+      - name: Create the tag
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ inputs.version }}" -m "${{ inputs.version }}"
+          git push origin "${{ inputs.version }}"
+
+      - name: Say what to pin
+        run: |
+          echo "### Tagged \`${{ inputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo '' >> $GITHUB_STEP_SUMMARY
+          echo 'Consumers can now pin:' >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo 'npm install github:${{ github.repository }}#${{ inputs.version }}' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
