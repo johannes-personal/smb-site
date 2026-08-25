@@ -115,6 +115,31 @@ directory install hides exactly the mistakes that reach consumers: a file left
 out of `files`, an import that only resolves through the source tree, a peer
 dependency nobody declared. Two such faults have already been caught this way.
 
+## Changing a block's props is a data migration
+
+The engine deploys in seconds. The page data that feeds it lives in each site's
+database and migrates as a separate, manual act. **In the window between those
+two, a site renders the old data against the new component — and the failure is
+silent**, because an unknown prop is ignored rather than rejected.
+
+That is not hypothetical. `ProductGrid` moved from `dept`/`category`/`brand` to
+a generic `filters` array. The code shipped, the database did not, and every
+filtered row quietly stopped filtering: two homepage rows showed identical
+items and the women's row led with a men's brand. It built, it typechecked, the
+tests passed.
+
+So when a block's props change:
+
+1. **Keep reading the old shape**, marked legacy, for at least one major
+   version. `ProductGrid` does this via `activeFilters()`, and a test pins it.
+2. **Migrate the data**, in the database and in `content/*.json` — the file is
+   not what the deployed site reads.
+3. **Look at the rendered page.** This class of fault is invisible to every
+   other check.
+
+Removing a legacy prop is a major version, and the release note has to say
+"migrate your page data first".
+
 ## Versioning
 
 Semver, and the major is not decorative:

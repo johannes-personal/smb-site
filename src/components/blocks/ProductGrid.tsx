@@ -36,7 +36,37 @@ export type ProductGridProps = {
   offset?: number;
   /** Set by listing pages that supply their own page frame. */
   bare?: boolean;
+  /** Legacy: filters as individual props, from before `filters` existed.
+   *
+   *  Kept because a shared engine deploys *before* anyone migrates the page
+   *  data that feeds it. Code ships in seconds; a database migration is a
+   *  separate, manual act. In the window between them a site renders with the
+   *  old shape against the new component — and the failure is silent, because
+   *  an unknown prop is simply ignored and every filtered row quietly stops
+   *  filtering.
+   *
+   *  That happened on the first migration: two homepage rows showed the same
+   *  items, and a women's row showed a men's brand. Nothing failed to build.
+   *
+   *  Removing these is a major version, and the release note must say
+   *  "migrate your page data first". */
+  dept?: string;
+  category?: string;
+  brand?: string;
 };
+
+/** Reads both shapes. `filters` wins where both are present. */
+function activeFilters(props: {
+  filters?: { field: string; value: string }[];
+  dept?: string;
+  category?: string;
+  brand?: string;
+}): { field: string; value: string }[] {
+  if (props.filters?.length) return props.filters;
+  return (["dept", "category", "brand"] as const)
+    .filter((f) => props[f])
+    .map((f) => ({ field: f, value: props[f] as string }));
+}
 
 export function ProductGrid({
   heading,
@@ -53,11 +83,14 @@ export function ProductGrid({
   variety = false,
   offset = 0,
   bare = false,
+  dept,
+  category,
+  brand,
   catalogue = [],
 }: BlockProps<ProductGridProps>) {
   let items = catalogue;
   if (collection) items = items.filter((i) => i.collection === collection);
-  for (const f of filters ?? []) {
+  for (const f of activeFilters({ filters, dept, category, brand })) {
     if (f.field && f.value) items = items.filter((i) => i.data[f.field] === f.value);
   }
   if (variety) items = spreadByBrand(items);
