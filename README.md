@@ -69,8 +69,12 @@ fix those instead.**
 ## Using the engine
 
 ```bash
-npm install github:johannes-personal/smb-site#v0.1.0
+npm install github:johannes-personal/smb-site#v0.1.0     # once the tag exists
+npm install github:johannes-personal/smb-site#da443ab9a34d51315adfbf77ace71abb22a9e5a3
 ```
+
+Pin something immutable — a tag or a full commit SHA, never `#main`. A project
+that floats on a branch has the drift problem back, just with extra steps.
 
 ```ts
 // next.config.ts — the engine ships TypeScript source rather than a build,
@@ -125,6 +129,9 @@ look small: every existing site's content becomes invalid.
 
 ## Status
 
-`v0.1.0`. One site built with it, at 884 products. The lessons from that build
-are logged in [`skill/CHANGELOG.md`](skill/CHANGELOG.md), including the
-expensive ones.
+`v0.1.0`, tagged in the working tree but **not yet pushed** — this session's git
+credentials cannot push tags. Create it with `git push origin v0.1.0`, or from
+the Releases page, and the pin above resolves. Until then, pin the commit.
+
+One site built with it, at 884 products. The lessons from that build are logged in
+[`skill/CHANGELOG.md`](skill/CHANGELOG.md), including the expensive ones.
